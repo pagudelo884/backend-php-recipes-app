@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 
 use App\Models\User;
+use App\Models\Recipe;
 
 class DatabaseSeeder extends Seeder
 {
@@ -31,6 +32,16 @@ class DatabaseSeeder extends Seeder
             'email' => 'paula@gmail.com',
             'password' => '',
 
+        ]);
+
+        Recipe::factory()->count(10)->create([
+            'title' => 'Título de la receta',
+            'imgRecipe' => 'img',
+            'description' => 'Descripción de la receta',
+            'timeCook' => 'Tiempo de cocción',
+            'portions' => 'Porciones',
+            'ingredients' => 'Ingredientes',
+            'instructions' => 'Instrucciones'
         ]);
 
     }
