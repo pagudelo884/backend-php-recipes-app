@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+// use Illuminate\Database\Console\Seeds\WithoutModelEven
 
+use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Recipe;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -34,7 +35,7 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
-        Recipe::factory()->count(10)->create([
+        Recipe::factory()->create([
             'title' => 'Título de la receta',
             'imgRecipe' => 'img',
             'description' => 'Descripción de la receta',
@@ -43,6 +44,27 @@ class DatabaseSeeder extends Seeder
             'ingredients' => 'Ingredientes',
             'instructions' => 'Instrucciones'
         ]);
+
+        Recipe::factory()->create([
+            'title' => 'Título de la receta',
+            'imgRecipe' => 'img',
+            'description' => 'Descripción de la receta',
+            'timeCook' => 'Tiempo de cocción',
+            'portions' => 'Porciones',
+            'ingredients' => 'Ingredientes',
+            'instructions' => 'Instrucciones'
+        ]);
+
+        Recipe::factory()->create([
+            'title' => 'Título de la receta',
+            'imgRecipe' => 'img',
+            'description' => 'Descripción de la receta',
+            'timeCook' => 'Tiempo de cocción',
+            'portions' => 'Porciones',
+            'ingredients' => 'Ingredientes',
+            'instructions' => 'Instrucciones'
+        ]);
+
 
     }
 }
