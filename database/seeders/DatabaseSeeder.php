@@ -19,53 +19,39 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Himo',
             'email' => 'himo@gmail.com',
-            'password' => '',
+            
         ]);
 
         User::factory()->create([
             'name' => 'Camila',
             'email' => 'camila@gmail.com',
-            'password' => '',
         ]);
 
         User::factory()->create([
             'name' => 'Paula',
             'email' => 'paula@gmail.com',
-            'password' => '',
 
         ]);
 
         Recipe::factory()->create([
-            'title' => 'Título de la receta',
-            'imgRecipe' => 'img',
-            'description' => 'Descripción de la receta',
-            'timeCook' => 'Tiempo de cocción',
-            'portions' => 'Porciones',
-            'ingredients' => 'Ingredientes',
-            'instructions' => 'Instrucciones'
+                'title' => 'Receta 1',
+                'imgRecipe' => 'imagen1.jpg',
+                'description' => 'Descripción de la receta 1',
+                'timeCook' => '30 minutos',
+                'portions' => '4 porciones',
+                'ingredients' => 'Ingrediente 1, Ingrediente 2',
+                'instructions' => 'Instrucción 1, Instrucción 2',
         ]);
 
         Recipe::factory()->create([
-            'title' => 'Título de la receta',
-            'imgRecipe' => 'img',
-            'description' => 'Descripción de la receta',
-            'timeCook' => 'Tiempo de cocción',
-            'portions' => 'Porciones',
-            'ingredients' => 'Ingredientes',
-            'instructions' => 'Instrucciones'
+                'title' => 'Receta 2',
+                'imgRecipe' => 'imagen2.jpg',
+                'description' => 'Descripción de la receta 2',
+                'timeCook' => '45 minutos',
+                'portions' => '6 porciones',
+                'ingredients' => 'Ingrediente 3, Ingrediente 4',
+                'instructions' => 'Instrucción 3, Instrucción 4',
         ]);
-
-        Recipe::factory()->create([
-            'title' => 'Título de la receta',
-            'imgRecipe' => 'img',
-            'description' => 'Descripción de la receta',
-            'timeCook' => 'Tiempo de cocción',
-            'portions' => 'Porciones',
-            'ingredients' => 'Ingredientes',
-            'instructions' => 'Instrucciones'
-        ]);
-
-
     }
 }
 

@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 /**
  * Class Recipe
@@ -25,7 +27,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Recipe extends Model
 {
-    
+  use HasFactory;
+
     static $rules = [
 		'title' => 'required',
 		'imgRecipe' => 'required',
