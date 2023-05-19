@@ -18,7 +18,7 @@ class RecipeController extends Controller
     public function store(Request $request)
     {
         // Validar los datos de entrada
-        $data = $request->validate([
+        $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'imgRecipe' => 'nullable|string',
             'description' => 'required|string',
@@ -26,13 +26,25 @@ class RecipeController extends Controller
             'portions' => 'required|string',
             'ingredients' => 'required|string',
             'instructions' => 'required|string',
-            'user_id' => 'required|integer|exists:users,id'
+            'user_id' => 'integer|exists:users,id'
         ]);
 
         // Crear una nueva receta con los datos validados
-        $recipe = Recipe::create($data);
+            $recipe = Recipe::create([
+                // 'user_id' => $validatedData['user_id'],
+                'title' => $validatedData['title'],
+                'imgRecipe' => $validatedData['imgRecipe'],
+                'description' => $validatedData['description'],
+                'timeCook' => $validatedData['timeCook'],
+                'portions' => $validatedData['portions'],
+                'ingredients' => $validatedData['ingredients'],
+                'instructions' => $validatedData['instructions'],
+            ]);
 
-        return response()->json($recipe, 201);
+            return response()->json([
+                'message' => 'Receta creada exitosamente',
+                'data' => $recipe,
+            ], 201);
     }
 
     public function show(Recipe $recipe)
@@ -60,12 +72,17 @@ class RecipeController extends Controller
         return response()->json($recipe, 201);
     }
 
-    public function destroy(Recipe $recipe)
+    public function destroy($id)
     {
         // Eliminar un registro específico de la tabla 'recipes'
-        //$recipe = Recipe::findOrFail($id); 
-        $recipe->delete();
+        // $recipe = Recipe::findOrFail($id); 
+        $recipe = Recipe::find($id);
 
-        return response()->json(null, 204);
+        if (!$recipe) {
+            return response()->json(['error' => 'recipe not found'], 404);
+        }
+        $recipe->delete();
+        return response()->json(['message' => 'La receta fue eliminada correctamente']);
+        
     }
 }
