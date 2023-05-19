@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\RecipeController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,8 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/recipes', [RecipeController::class, 'index']);
-Route::post('/recipes', [RecipeController::class, 'store']);
-Route::get('/recipes/{id}', [RecipeController::class, 'show']);
-Route::put('/recipes/{id}', [RecipeController::class, 'update']);
-Route::delete('/recipes/{id}', [RecipeController::class, 'destroy']);
+Route::get('/recipes', [RecipeController::class, 'index'])->name('recipesApi');
+Route::post('/createRecipes', [RecipeController::class, 'store'])->name('createRecipesApi');
+Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('showRecipesApi');
+Route::put('/updateRecipes/{id}', [RecipeController::class, 'update'])->name('updateRecipesApi');
+Route::delete('/deleteRecipes/{id}', [RecipeController::class, 'destroy'])->name('deleteRecipesApi');
