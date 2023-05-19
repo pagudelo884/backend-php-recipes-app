@@ -27,20 +27,22 @@ class RecipeController extends Controller
             'ingredients' => 'required|string',
             'instructions' => 'required|string',
             'user_id' => 'integer|exists:users,id'
-            
+
         ]);
 
         // Crear una nueva receta con los datos validados
-            $recipe = Recipe::create([
-                // 'user_id' => $validatedData['user_id'],
-                'title' => $validatedData['title'],
-                'imgRecipe' => $validatedData['imgRecipe'],
-                'description' => $validatedData['description'],
-                'timeCook' => $validatedData['timeCook'],
-                'portions' => $validatedData['portions'],
-                'ingredients' => $validatedData['ingredients'],
-                'instructions' => $validatedData['instructions'],
-            ]);
+            // $recipe = Recipe::create([
+            //     // 'user_id' => $validatedData['user_id'],
+            //     'title' => $validatedData['title'],
+            //     'imgRecipe' => $validatedData['imgRecipe'],
+            //     'description' => $validatedData['description'],
+            //     'timeCook' => $validatedData['timeCook'],
+            //     'portions' => $validatedData['portions'],
+            //     'ingredients' => $validatedData['ingredients'],
+            //     'instructions' => $validatedData['instructions'],
+            // ]);
+
+            $recipe = Recipe::create($validatedData);
 
             return response()->json([
                 'message' => 'Receta creada exitosamente',
