@@ -27,6 +27,7 @@ class RecipeController extends Controller
             'ingredients' => 'required|string',
             'instructions' => 'required|string',
             'user_id' => 'integer|exists:users,id'
+            
         ]);
 
         // Crear una nueva receta con los datos validados
