@@ -1,7 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Api;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Recipe;
 
@@ -63,7 +63,7 @@ class RecipeController extends Controller
     public function destroy(Recipe $recipe)
     {
         // Eliminar un registro específico de la tabla 'recipes'
-        //$recipe = Recipe::findOrFail($id);
+        //$recipe = Recipe::findOrFail($id); 
         $recipe->delete();
 
         return response()->json(null, 204);
