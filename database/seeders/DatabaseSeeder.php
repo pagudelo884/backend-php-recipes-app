@@ -33,6 +33,8 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
+        Recipe::factory(10)->create();
+
         Recipe::factory()->create([
                 'title' => 'Receta 1',
                 'imgRecipe' => 'imagen1.jpg',
