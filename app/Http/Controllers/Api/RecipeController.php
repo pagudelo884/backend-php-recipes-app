@@ -65,7 +65,10 @@ class RecipeController extends Controller
         $recipe = Recipe::find($id);
         $recipe->update($validatedData);
 
-        return response()->json($recipe);
+        return response()->json([
+            'message' => 'Receta modificada con éxito',
+            'data' => $recipe
+        ], 201);
     }
 
     public function destroy($id)
