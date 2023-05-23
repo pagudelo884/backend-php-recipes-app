@@ -68,6 +68,15 @@ class RecipeTest extends TestCase
             'ingredients' => 'Descripción actualizada',
             'instructions' => 'Descripción actualizada'
         ]);
+
+    }
+
+        public function test_IfRecipeDeletedInJsonFile()
+    {
+        $recipe = Recipe::factory()->create();
+        $response = $this->delete(route('deleteRecipesApi', $recipe->id));
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('recipes', ['id' => $recipe->id]);
     }
 
 }
