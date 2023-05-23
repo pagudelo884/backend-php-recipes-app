@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Recipe;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class RecipeController extends Controller
 {
@@ -87,5 +88,13 @@ class RecipeController extends Controller
         $recipe->delete();
         return response()->json(['message' => 'La receta fue eliminada correctamente']);
         
+    }
+
+    public function search($title)
+    {
+        $recipes = DB::table('recipes')
+                    ->where('title', 'like', '%' . $title . '%')
+                    ->get();
+        return response()->json($recipes);
     }
 }

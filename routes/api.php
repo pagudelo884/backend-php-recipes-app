@@ -42,3 +42,4 @@ Route::post('/createRecipes', [RecipeController::class, 'store'])->name('createR
 Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('showRecipesApi');
 Route::put('/updateRecipes/{id}', [RecipeController::class, 'update'])->name('updateRecipesApi');
 Route::delete('/deleteRecipes/{id}', [RecipeController::class, 'destroy'])->name('deleteRecipesApi');
+Route::get('/recipes/search/{title}', [RecipeController::class, 'search']);
