@@ -18,37 +18,30 @@ class RecipeController extends Controller
 
     public function store(Request $request)
     {
-        // Validar los datos de entrada
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'imgRecipe' => 'nullable|string',
-            'description' => 'required|string',
-            'timeCook' => 'required|string',
-            'portions' => 'required|string',
-            'ingredients' => 'required|string',
-            'instructions' => 'required|string',
-            'user_id' => 'integer|exists:users,id'
-
+            'title' => 'required|max:255',
+            'imgRecipe' => 'required',
+            'description' => 'required',
+            'timeCook' => 'required',
+            'portions' => 'required',
+            'ingredients' => 'required',
+            'instructions' => 'required'
         ]);
 
-        // Crear una nueva receta con los datos validados
-            // $recipe = Recipe::create([
-            //     // 'user_id' => $validatedData['user_id'],
-            //     'title' => $validatedData['title'],
-            //     'imgRecipe' => $validatedData['imgRecipe'],
-            //     'description' => $validatedData['description'],
-            //     'timeCook' => $validatedData['timeCook'],
-            //     'portions' => $validatedData['portions'],
-            //     'ingredients' => $validatedData['ingredients'],
-            //     'instructions' => $validatedData['instructions'],
-            // ]);
+        $recipe = Recipe::create([
+            'title' => $validatedData['title'],
+            'imgRecipe' => $validatedData['imgRecipe'],
+            'description' => $validatedData['description'],
+            'timeCook' => $validatedData['timeCook'],
+            'portions' => $validatedData['portions'],
+            'ingredients' => $validatedData['ingredients'],
+            'instructions' =>$validatedData['instructions'],
+        ]);
 
-            $recipe = Recipe::create($validatedData);
-
-            return response()->json([
-                'message' => 'Receta creada exitosamente',
-                'data' => $recipe,
-            ], 201);
+        return response()->json([
+            'message' => 'Receta creada con éxito',
+            'data' => $recipe
+        ], 201);
     }
 
     public function show($id)
@@ -57,23 +50,22 @@ class RecipeController extends Controller
         return response()->json($recipe);
     }
 
-    public function update(Request $request, Recipe $recipe)
+    public function update(Request $request, $id)
     {
-        // Validar los datos de entrada
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'imgRecipe' => 'nullable|string',
-            'description' => 'required|string',
-            'timeCook' => 'required|string',
-            'portions' => 'required|string',
-            'ingredients' => 'required|string',
-            'instructions' => 'required|string',
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'imgRecipe' => 'required',
+            'description' => 'required',
+            'timeCook' => 'required',
+            'portions' => 'required',
+            'ingredients' => 'required',
+            'instructions' => 'required'
         ]);
 
-        // Crear una nueva receta con los datos validados
-        $recipe = Recipe::update($data);
+        $recipe = Recipe::find($id);
+        $recipe->update($validatedData);
 
-        return response()->json($recipe, 201);
+        return response()->json($recipe);
     }
 
     public function destroy($id)
