@@ -51,9 +51,9 @@ class RecipeController extends Controller
             ], 201);
     }
 
-    public function show(Recipe $recipe)
+    public function show($id)
     {
-        // Devolver la receta en formato JSON
+        $recipe = Recipe::find($id);
         return response()->json($recipe);
     }
 
