@@ -54,6 +54,11 @@ class RecipeController extends Controller
     public function show($id)
     {
         $recipe = Recipe::find($id);
+
+        if (!$recipe) {
+            return response()->json(['error' => 'recipe not found'], 404);
+        }
+
         return response()->json($recipe);
     }
 
@@ -75,6 +80,10 @@ class RecipeController extends Controller
             return response()->json(['error' => 'No tienes permiso para modificar esta receta'], 403);
         }
 
+        if (!$recipe) {
+            return response()->json(['error' => 'recipe not found'], 404);
+        }
+
 
         $recipe->update($validatedData);
 
@@ -89,13 +98,15 @@ class RecipeController extends Controller
 
         $recipe = Recipe::find($id);
 
+        if (!$recipe) {
+            return response()->json(['error' => 'recipe not found'], 404);
+        }
+
         if (auth()->id() !== $recipe->user_id) {
             return response()->json(['error' => 'No tienes permiso para eliminar esta receta'], 403);
         }
 
-        if (!$recipe) {
-            return response()->json(['error' => 'recipe not found'], 404);
-        }
+
         $recipe->delete();
         return response()->json(['message' => 'La receta fue eliminada correctamente']);
         
@@ -106,6 +117,7 @@ class RecipeController extends Controller
         $recipes = DB::table('recipes')
                     ->where('title', 'like', '%' . $title . '%')
                     ->get();
+
         return response()->json($recipes);
     }
 
@@ -114,4 +126,5 @@ class RecipeController extends Controller
         $recipes = Recipe::where('user_id', auth()->id())->get();
         return response()->json($recipes);
     }
+    
 }
