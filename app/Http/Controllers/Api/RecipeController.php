@@ -35,6 +35,7 @@ class RecipeController extends Controller
         ]);
 
         $recipe = Recipe::create([
+            'user_id' => auth()->id(),
             'title' => $validatedData['title'],
             'imgRecipe' => $validatedData['imgRecipe'],
             'description' => $validatedData['description'],
@@ -69,6 +70,12 @@ class RecipeController extends Controller
         ]);
 
         $recipe = Recipe::find($id);
+        // Verificar si el usuario autenticado es el mismo que creó la receta
+        if (auth()->id() !== $recipe->user_id) {
+            return response()->json(['error' => 'No tienes permiso para modificar esta receta'], 403);
+        }
+
+
         $recipe->update($validatedData);
 
         return response()->json([
@@ -79,9 +86,12 @@ class RecipeController extends Controller
 
     public function destroy($id)
     {
-        // Eliminar un registro específico de la tabla 'recipes'
-        // $recipe = Recipe::findOrFail($id); 
+
         $recipe = Recipe::find($id);
+
+        if (auth()->id() !== $recipe->user_id) {
+            return response()->json(['error' => 'No tienes permiso para eliminar esta receta'], 403);
+        }
 
         if (!$recipe) {
             return response()->json(['error' => 'recipe not found'], 404);
@@ -96,6 +106,12 @@ class RecipeController extends Controller
         $recipes = DB::table('recipes')
                     ->where('title', 'like', '%' . $title . '%')
                     ->get();
+        return response()->json($recipes);
+    }
+
+    public function myRecipes()
+    {
+        $recipes = Recipe::where('user_id', auth()->id())->get();
         return response()->json($recipes);
     }
 }

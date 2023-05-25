@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('recipes', function (Blueprint $table) {
             $table->id();
 
+            $table->unsignedBigInteger('user_id')->default(1);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');;
+
             $table->string('title');
             $table->text('imgRecipe');
             $table->text('description');
@@ -21,9 +24,6 @@ return new class extends Migration
             $table->text('portions');  
             $table->text('ingredients');
             $table->text('instructions');
-
-            // $table->unsignedBigInteger('user_id');
-            // $table->foreign('user_id')->references('id')->on('users');
 
             $table->timestamps();
         });
