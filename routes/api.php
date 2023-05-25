@@ -38,9 +38,9 @@ Route::group([
 });
 
 Route::get('/recipes', [RecipeController::class, 'index'])->name('recipesApi');
-Route::post('/createRecipes', [RecipeController::class, 'store'])->name('createRecipesApi');
+Route::post('/createRecipes', [RecipeController::class, 'store'])->name('createRecipesApi')->middleware('auth');
 Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('showRecipesApi');
-Route::put('/updateRecipes/{id}', [RecipeController::class, 'update'])->name('updateRecipesApi');
-Route::delete('/deleteRecipes/{id}', [RecipeController::class, 'destroy'])->name('deleteRecipesApi');
+Route::put('/updateRecipes/{id}', [RecipeController::class, 'update'])->name('updateRecipesApi')->middleware('auth');
+Route::delete('/deleteRecipes/{id}', [RecipeController::class, 'destroy'])->name('deleteRecipesApi')->middleware('auth');
 Route::get('/recipes/search/{title}', [RecipeController::class, 'search']);
-Route::get('/myRecipes', [RecipeController::class, 'myRecipes']);
+Route::get('/myRecipes', [RecipeController::class, 'myRecipes'])->middleware('auth');

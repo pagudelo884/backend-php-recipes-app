@@ -5,6 +5,7 @@ use App\Models\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class RecipeController extends Controller
 {
@@ -34,21 +35,28 @@ class RecipeController extends Controller
             'instructions' => 'required'
         ]);
 
-        $recipe = Recipe::create([
-            'user_id' => auth()->id(),
-            'title' => $validatedData['title'],
-            'imgRecipe' => $validatedData['imgRecipe'],
-            'description' => $validatedData['description'],
-            'timeCook' => $validatedData['timeCook'],
-            'portions' => $validatedData['portions'],
-            'ingredients' => $validatedData['ingredients'],
-            'instructions' =>$validatedData['instructions'],
-        ]);
+        
 
-        return response()->json([
-            'message' => 'Receta creada con éxito',
-            'data' => $recipe
-        ], 201);
+        if (Auth::check()) {
+
+            $recipe = Recipe::create([
+                'user_id' => auth()->id(),
+                'title' => $validatedData['title'],
+                'imgRecipe' => $validatedData['imgRecipe'],
+                'description' => $validatedData['description'],
+                'timeCook' => $validatedData['timeCook'],
+                'portions' => $validatedData['portions'],
+                'ingredients' => $validatedData['ingredients'],
+                'instructions' =>$validatedData['instructions'],
+            ]);
+    
+            return response()->json([
+                'message' => 'Receta creada con éxito',
+                'data' => $recipe
+            ], 201);
+
+        } 
+        
     }
 
     public function show($id)
@@ -126,5 +134,5 @@ class RecipeController extends Controller
         $recipes = Recipe::where('user_id', auth()->id())->get();
         return response()->json($recipes);
     }
-    
+
 }
