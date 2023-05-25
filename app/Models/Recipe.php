@@ -51,12 +51,12 @@ class Recipe extends Model
 
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function user()
-    {
-        return $this->hasOne('App\Models\User', 'id', 'user_id');
-    }
+  {
+      return $this->belongsTo(User::class);
+  }
     
 
 }

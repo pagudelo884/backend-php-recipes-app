@@ -8,6 +8,12 @@ use App\Http\Controllers\Controller;
 
 class RecipeController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api')->except(['index', 'show', 'search']);
+    }
+
     public function index()
     {
         // Obtener todos los registros de la tabla 'recipes' ordenados por orden alfabetico
