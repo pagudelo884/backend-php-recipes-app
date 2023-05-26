@@ -80,8 +80,6 @@ class RecipeTest extends TestCase
         ]);
     }
 
-
-
     public function testDestroyUnauthorized()
     {
         // Crear dos usuarios de prueba y autenticar al primero
