@@ -44,7 +44,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function myRecipes()
+    public function me()
     {
         return response()->json(auth()->user());
     }
