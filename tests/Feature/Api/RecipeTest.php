@@ -112,5 +112,21 @@ class RecipeTest extends TestCase
         $response->assertStatus(404);
     }
 
+    public function test_my_recipes()
+    {
+        // Crear un usuario de prueba
+        $user = User::factory()->create();
 
+        // Crear algunas recetas de prueba asociadas con el usuario
+        Recipe::factory()->count(3)->create(['user_id' => $user->id]);
+
+        // Iniciar sesión como el usuario de prueba
+        $response = $this->actingAs($user)->get('/api/myRecipes');
+
+        // Verificar que la respuesta tenga un código de estado 200 (OK)
+        $response->assertStatus(200);
+
+        // Verificar que la respuesta contenga las recetas creadas por el usuario
+        $response->assertJsonCount(3);
+    }
 }
