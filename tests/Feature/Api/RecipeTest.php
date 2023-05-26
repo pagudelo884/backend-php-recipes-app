@@ -35,6 +35,96 @@ class RecipeTest extends TestCase
         ]);
     }
 
+    public function testStore()
+{
+    // Create a test user and authenticate as that user
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    // Create test data for the recipe
+    $data = [
+        'title' => 'Test Recipe',
+        'imgRecipe' => 'test.jpg',
+        'description' => 'This is a test recipe',
+        'timeCook' => 30,
+        'portions' => 4,
+        'ingredients' => 'Test ingredients',
+        'instructions' => 'Test instructions'
+    ];
+
+    // Send a POST request to the /createRecipes endpoint with the test data
+    $response = $this->post('/api/recipes', $data);
+
+    // Verify that the response is correct
+    $response->assertStatus(201);
+    $response->assertJson([
+        'message' => 'Receta creada con éxito',
+        'data' => [
+            'user_id' => $user->id,
+            'title' => $data['title'],
+            'imgRecipe' => $data['imgRecipe'],
+            'description' => $data['description'],
+            'timeCook' => $data['timeCook'],
+            'portions' => $data['portions'],
+            'ingredients' => $data['ingredients'],
+            'instructions' =>$data['instructions']
+        ]
+    ]);
+
+    // Verify that the recipe was created in the database
+    $this->assertDatabaseHas('recipes', [
+        'user_id' => $user->id,
+        'title' => $data['title'],
+        'imgRecipe' => $data['imgRecipe'],
+        'description' => $data['description'],
+        'timeCook' => $data['timeCook'],
+        'portions' => $data['portions'],
+        'ingredients' => $data['ingredients'],
+        'instructions' =>$data['instructions']
+    ]);
+}
+
+
+    public function testShow()
+    {
+        // Create a test user and authenticate as that user
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // Create a test recipe associated with the user
+        $recipe = Recipe::factory()->create(['user_id' => $user->id]);
+
+        // Send a GET request to the /api/recipes/{id} endpoint
+        $response = $this->get("/api/recipes/{$recipe->id}");
+
+        // Verify that the response is correct
+        $response->assertStatus(200);
+        $response->assertJson([
+            'id' => $recipe->id,
+            'user_id' => $user->id,
+            'title' => $recipe->title,
+            'imgRecipe' => $recipe->imgRecipe,
+            'description' => $recipe->description,
+            'timeCook' => $recipe->timeCook,
+            'portions' => $recipe->portions,
+            'ingredients' => $recipe->ingredients,
+            'instructions' =>$recipe->instructions
+        ]);
+    }
+
+    public function testShowNotFound()
+    {
+        // Create a test user and authenticate as that user
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // Send a GET request to the /api/recipes/{id} endpoint with an invalid ID
+        $response = $this->get('/api/recipes/999');
+
+        // Verify that the response is a 404 error
+        $response->assertStatus(404);
+    }
+    
     public function testSearch()
     {
         // Crear un usuario de prueba
@@ -79,8 +169,6 @@ class RecipeTest extends TestCase
         'id' => $recipe->id
         ]);
     }
-
-
 
     public function testDestroyUnauthorized()
     {
