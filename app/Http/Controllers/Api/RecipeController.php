@@ -5,9 +5,16 @@ use App\Models\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class RecipeController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api')->except(['index', 'show', 'search']);
+    }
+
     public function index()
     {
         // Obtener todos los registros de la tabla 'recipes' ordenados por orden alfabetico
@@ -18,73 +25,96 @@ class RecipeController extends Controller
 
     public function store(Request $request)
     {
-        // Validar los datos de entrada
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'imgRecipe' => 'nullable|string',
-            'description' => 'required|string',
-            'timeCook' => 'required|string',
-            'portions' => 'required|string',
-            'ingredients' => 'required|string',
-            'instructions' => 'required|string',
-            'user_id' => 'integer|exists:users,id'
-
+            'title' => 'required|max:255',
+            'imgRecipe' => 'required',
+            'description' => 'required',
+            'timeCook' => 'required',
+            'portions' => 'required',
+            'ingredients' => 'required',
+            'instructions' => 'required'
         ]);
 
-        // Crear una nueva receta con los datos validados
-            // $recipe = Recipe::create([
-            //     // 'user_id' => $validatedData['user_id'],
-            //     'title' => $validatedData['title'],
-            //     'imgRecipe' => $validatedData['imgRecipe'],
-            //     'description' => $validatedData['description'],
-            //     'timeCook' => $validatedData['timeCook'],
-            //     'portions' => $validatedData['portions'],
-            //     'ingredients' => $validatedData['ingredients'],
-            //     'instructions' => $validatedData['instructions'],
-            // ]);
+        
 
-            $recipe = Recipe::create($validatedData);
+        if (Auth::check()) {
 
+            $recipe = Recipe::create([
+                'user_id' => auth()->id(),
+                'title' => $validatedData['title'],
+                'imgRecipe' => $validatedData['imgRecipe'],
+                'description' => $validatedData['description'],
+                'timeCook' => $validatedData['timeCook'],
+                'portions' => $validatedData['portions'],
+                'ingredients' => $validatedData['ingredients'],
+                'instructions' =>$validatedData['instructions'],
+            ]);
+    
             return response()->json([
-                'message' => 'Receta creada exitosamente',
-                'data' => $recipe,
+                'message' => 'Receta creada con éxito',
+                'data' => $recipe
             ], 201);
+
+        } 
+        
     }
 
     public function show($id)
     {
         $recipe = Recipe::find($id);
+
+        if (!$recipe) {
+            return response()->json(['error' => 'recipe not found'], 404);
+        }
+
         return response()->json($recipe);
     }
 
-    public function update(Request $request, Recipe $recipe)
+    public function update(Request $request, $id)
     {
-        // Validar los datos de entrada
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'imgRecipe' => 'nullable|string',
-            'description' => 'required|string',
-            'timeCook' => 'required|string',
-            'portions' => 'required|string',
-            'ingredients' => 'required|string',
-            'instructions' => 'required|string',
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'imgRecipe' => 'required',
+            'description' => 'required',
+            'timeCook' => 'required',
+            'portions' => 'required',
+            'ingredients' => 'required',
+            'instructions' => 'required'
         ]);
 
-        // Crear una nueva receta con los datos validados
-        $recipe = Recipe::update($data);
+        $recipe = Recipe::find($id);
+        // Verificar si el usuario autenticado es el mismo que creó la receta
+        if (auth()->id() !== $recipe->user_id) {
+            return response()->json(['error' => 'No tienes permiso para modificar esta receta'], 403);
+        }
 
-        return response()->json($recipe, 201);
+        if (!$recipe) {
+            return response()->json(['error' => 'recipe not found'], 404);
+        }
+
+
+        $recipe->update($validatedData);
+
+        return response()->json([
+            'message' => 'Receta modificada con éxito',
+            'data' => $recipe
+        ], 201);
     }
 
     public function destroy($id)
     {
-        // Eliminar un registro específico de la tabla 'recipes'
-        // $recipe = Recipe::findOrFail($id); 
+
         $recipe = Recipe::find($id);
 
         if (!$recipe) {
             return response()->json(['error' => 'recipe not found'], 404);
         }
+
+        if (auth()->id() !== $recipe->user_id) {
+            return response()->json(['error' => 'No tienes permiso para eliminar esta receta'], 403);
+        }
+
+
         $recipe->delete();
         return response()->json(['message' => 'La receta fue eliminada correctamente']);
         
@@ -95,6 +125,14 @@ class RecipeController extends Controller
         $recipes = DB::table('recipes')
                     ->where('title', 'like', '%' . $title . '%')
                     ->get();
+
         return response()->json($recipes);
     }
+
+    public function myRecipes()
+    {
+        $recipes = Recipe::where('user_id', auth()->id())->get();
+        return response()->json($recipes);
+    }
+
 }

@@ -44,7 +44,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function myRecipes()
+    public function me()
     {
         return response()->json(auth()->user());
     }
@@ -83,7 +83,8 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'user_id' => auth()->user()->id
         ]);
     }
 
@@ -92,7 +93,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(),[
             'name' => 'required',
             'email' => 'required|string|max:100|unique:users',
-            'password' => 'required|string|min:6', //se puede agregar el atributo confirmed
+            'password' => 'required|string|min:6|confirmed', 
         ]);
 
         if($validator->fails()){

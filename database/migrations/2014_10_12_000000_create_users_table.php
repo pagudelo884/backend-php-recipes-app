@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('avatar')->default('default.jpg');
+            $table->string('avatar')->default('https://w7.pngwing.com/pngs/148/892/png-transparent-computer-icons-user-symbol-light-client-icon-service-computer-orange.png');
             $table->rememberToken();
             $table->timestamps();
         });
