@@ -42,22 +42,5 @@ class AuthTest extends TestCase
             $response->assertJson(['error' => 'Unauthorized']);
         }
 
-    // public function testAuthenticatedUserCanAccessTheirRecipes()
-    //     {
-    //         // Create a user
-    //         $user = User::create([
-    //             'name' => 'Test User',
-    //             'email' => 'test@example.com',
-    //             'password' => bcrypt('password')
-    //         ]);
-        
-    //         // Act as the authenticated user
-    //         $this->actingAs($user, 'api');
-        
-    //         // Call the myRecipes endpoint
-    //         $response = $this->get('/api/auth/myRecipes');
-        
-    //         // Check if the response contains the user data
-    //         $response->assertJson(['name' => 'Test User', 'email' => 'test@example.com']);
-    //     }
+
 }
