@@ -2,81 +2,115 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\Recipe;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
+use App\Models\Recipe;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RecipeTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_CheckIfRecipesListedInJsonFile()
+    public function testIndex()
     {
-        Recipe::factory(2)->create();
-        $response = $this->get(route('recipesApi'));
-        $response->assertStatus(200)->assertJsonCount(2);
+    // Crear un usuario de prueba
+    $user = User::factory()->create();
+
+    // Crear algunas recetas de prueba asociadas al usuario
+    $recipe1 = Recipe::factory()->create(['user_id' => $user->id, 'title' => 'Receta C']);
+    $recipe2 = Recipe::factory()->create(['user_id' => $user->id, 'title' => 'Receta A']);
+    $recipe3 = Recipe::factory()->create(['user_id' => $user->id, 'title' => 'Receta B']);
+
+    // Enviar una solicitud GET al endpoint /api/recipes
+    $response = $this->get('/api/recipes');
+
+    // Verificar que la respuesta es correcta
+    $response->assertStatus(200);
+    $response->assertJsonCount(3);
+        $response->assertJson([
+        ['id' => $recipe2->id],
+        ['id' => $recipe3->id],
+        ['id' => $recipe1->id]
+        ]);
     }
 
-    public function test_CheckIfCanCreateAnRecipeWithJsonFile()
+    public function testSearch()
     {
+        // Crear un usuario de prueba
+        $user = User::factory()->create();
 
-        $data = [
-            'title' => 'Paella',
-            'imgRecipe' => 'https://nomen.es/wp-content/uploads/2020/09/trucos-paella-perfecta.jpg',
-            'description' => 'Plato de arroz seco, con carne, pescado, mariscos, legumbres, etc., característico de la región valenciana, en España.',
-            'timeCook' => '25 minutos',
-            'portions' => '4 porciones',
-            'ingredients' => 'Arroz, pimineto rojo, cebolla, ajo, aceite de oliva, sal, mejillones, anillas de calamar, gambas, cigalas',
-            'instructions' => 'intructions'
-        ];
+        // Crear algunas recetas de prueba asociadas al usuario
+        $recipe1 = Recipe::factory()->create(['user_id' => $user->id, 'title' => 'Receta de pollo']);
+        $recipe2 = Recipe::factory()->create(['user_id' => $user->id, 'title' => 'Receta de pescado']);
+        $recipe3 = Recipe::factory()->create(['user_id' => $user->id, 'title' => 'Receta de carne']);
 
-        $response = $this->post(route('createRecipesApi'), $data);
-        $response->assertStatus(201)->assertJsonFragment($data);
+        // Enviar una solicitud GET al endpoint /api/recipes/search/pollo
+        $response = $this->get('/api/recipes/search/pollo');
+
+        // Verificar que la respuesta es correcta
+        $response->assertStatus(200);
+        $response->assertJsonCount(1);
+        $response->assertJson([
+        ['id' => $recipe1->id]
+        ]);
     }
 
-    public function test_CheckIfCanUpdateRecipeWithJsonFile()
+    public function testDestroy()
     {
-        // Crear una receta de prueba
-        $recipe = Recipe::factory()->create();
+        // Crear un usuario de prueba y autenticarlo
+        $user = User::factory()->create();
+        $this->actingAs($user);
 
-        // Datos actualizados para la receta
-        $data = [
-            'title' => 'Título actualizado',
-            'description' => 'Descripción actualizada',
-            'imgRecipe' => 'Descripción actualizada',
-            'timeCook' => 'Descripción actualizada',
-            'portions' => 'Descripción actualizada',
-            'ingredients' => 'Descripción actualizada',
-            'instructions' => 'Descripción actualizada'
-        ];
+        // Crear una receta de prueba asociada al usuario
+        $recipe = Recipe::factory()->create(['user_id' => $user->id]);
 
-        // Enviar una solicitud PUT a la ruta de actualización de recetas
-        $response = $this->put(route('updateRecipesApi', $recipe->id), $data);
+        // Enviar una solicitud DELETE para eliminar la receta
+        $response = $this->delete("/api/deleteRecipes/{$recipe->id}");
 
-        // Verificar que el código de estado de la respuesta sea 200
-        $response->assertStatus(201);
-
-        // Verificar que los datos de la receta se hayan actualizado correctamente
-        $this->assertDatabaseHas('recipes', [
-            'id' => $recipe->id,
-            'title' => 'Título actualizado',
-            'description' => 'Descripción actualizada',
-            'imgRecipe' => 'Descripción actualizada',
-            'timeCook' => 'Descripción actualizada',
-            'portions' => 'Descripción actualizada',
-            'ingredients' => 'Descripción actualizada',
-            'instructions' => 'Descripción actualizada'
+        // Verificar que la respuesta es correcta
+        $response->assertStatus(200);
+        $response->assertJson([
+        'message' => 'La receta fue eliminada correctamente'
         ]);
 
+        // Verificar que la receta se ha eliminado de la base de datos
+        $this->assertDatabaseMissing('recipes', [
+        'id' => $recipe->id
+        ]);
     }
 
-        public function test_IfRecipeDeletedInJsonFile()
+
+
+    public function testDestroyUnauthorized()
     {
-        $recipe = Recipe::factory()->create();
-        $response = $this->delete(route('deleteRecipesApi', $recipe->id));
-        $response->assertStatus(200);
-        $this->assertDatabaseMissing('recipes', ['id' => $recipe->id]);
+        // Crear dos usuarios de prueba y autenticar al primero
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+        $this->actingAs($user1);
+
+        // Crear una receta de prueba asociada al segundo usuario
+        $recipe = Recipe::factory()->create(['user_id' => $user2->id]);
+
+        // Enviar una solicitud DELETE para intentar eliminar la receta del segundo usuario
+        $response = $this->delete("/api/deleteRecipes/{$recipe->id}");
+
+        // Verificar que la respuesta es un error 403 (Prohibido)
+        $response->assertStatus(403);
     }
+
+    public function testDestroyNotFound()
+    {
+        // Crear un usuario de prueba y autenticarlo
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // Enviar una solicitud DELETE para intentar eliminar una receta que no existe
+        $response = $this->delete('/api/deleteRecipes/999');
+
+        // Verificar que la respuesta es un error 404 (No encontrado)
+        $response->assertStatus(404);
+    }
+
 
 }
