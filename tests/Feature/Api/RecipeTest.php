@@ -24,7 +24,7 @@ class RecipeTest extends TestCase
 
     // Enviar una solicitud GET al endpoint /api/recipes
     $response = $this->get('/api/recipes');
-
+ 
     // Verificar que la respuesta es correcta
     $response->assertStatus(200);
     $response->assertJsonCount(3);
