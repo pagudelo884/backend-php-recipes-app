@@ -156,7 +156,7 @@ class RecipeTest extends TestCase
         $recipe = Recipe::factory()->create(['user_id' => $user->id]);
 
         // Enviar una solicitud DELETE para eliminar la receta
-        $response = $this->delete("/api/deleteRecipes/{$recipe->id}");
+        $response = $this->delete("/api/recipes/{$recipe->id}");
 
         // Verificar que la respuesta es correcta
         $response->assertStatus(200);
@@ -181,7 +181,7 @@ class RecipeTest extends TestCase
         $recipe = Recipe::factory()->create(['user_id' => $user2->id]);
 
         // Enviar una solicitud DELETE para intentar eliminar la receta del segundo usuario
-        $response = $this->delete("/api/deleteRecipes/{$recipe->id}");
+        $response = $this->delete("/api/recipes/{$recipe->id}");
 
         // Verificar que la respuesta es un error 403 (Prohibido)
         $response->assertStatus(403);
@@ -194,7 +194,7 @@ class RecipeTest extends TestCase
         $this->actingAs($user);
 
         // Enviar una solicitud DELETE para intentar eliminar una receta que no existe
-        $response = $this->delete('/api/deleteRecipes/999');
+        $response = $this->delete('/api/recipes/999');
 
         // Verificar que la respuesta es un error 404 (No encontrado)
         $response->assertStatus(404);
