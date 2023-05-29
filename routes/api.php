@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RecipeController;
 
 
@@ -44,3 +45,6 @@ Route::put('/recipes/{id}', [RecipeController::class, 'update'])->name('updateRe
 Route::delete('/recipes/{id}', [RecipeController::class, 'destroy'])->name('deleteRecipesApi')->middleware('auth');
 Route::get('/recipes/search/{title}', [RecipeController::class, 'search']);
 Route::get('/myRecipes', [RecipeController::class, 'myRecipes'])->middleware('auth');
+
+Route::put('/user', [UserController::class, 'update']);
+Route::get('/user', [UserController::class, 'show']);
