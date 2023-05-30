@@ -105,10 +105,12 @@ class AuthController extends Controller
             ['password' => bcrypt($request->password)]
         ));
 
+        $token = auth()->login($user);
+
         return response()->json([
             'message' => '¡Usuario registrado exitosamente!',
             'user' => $user
-        ],201);
+        ] + $this->respondWithToken($token)->getData(true) ,201);
 
     }
 }
