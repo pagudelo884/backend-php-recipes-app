@@ -162,7 +162,7 @@ class DatabaseSeeder extends Seeder
         5.En otro tazón, mezcla el tomate, la cebolla, el limón, el aceite, el cilantro, la sal y la pimienta y deja marinar por 15 minutos en el refrigerador.
         6.Calienta las tortillas en el horno por 1 o 2 minutos.
         7.En cada tortilla coloca 3 cucharadas de carne, 2 cucharadas de pico de gallo y una cucharada de queso americano',
-
+ 
     ]);
 
         Recipe::factory()->create([
