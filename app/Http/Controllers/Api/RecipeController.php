@@ -15,19 +15,11 @@ class RecipeController extends Controller
         $this->middleware('auth:api')->except(['index', 'show', 'search']);
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        // Obtener la página actual desde la solicitud
-        $page = $request->input('page', 1);
+        // Obtener todos los registros de la tabla 'recipes' ordenados por orden alfabetico
+        $recipes = Recipe::orderBy('title')->get();
 
-        // Número de recetas por página
-        $perPage = 7;
-
-        // Obtener las recetas paginadas y ordenadas alfabéticamente por título
-        $recipes = Recipe::orderBy('title')
-            ->paginate($perPage, ['*'], 'page', $page);
-
-        // Devolver las recetas y la información de paginación en la respuesta
         return response()->json($recipes);
     }
 
