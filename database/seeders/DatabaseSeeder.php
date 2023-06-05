@@ -79,6 +79,94 @@ class DatabaseSeeder extends Seeder
             3. Incorporamos las alitas en la Cosori y preparamos 190 grados 20 min (agitamos cada 10 min)
             4. Una vez terminado el tiempo, pintamos las alitas con salsa barbacoa y darle toque final 205 grados (Max) 5 min',
     ]);
+
+    Recipe::factory()->create([
+        'title' => 'Jugo de Lulo',
+        'imgRecipe' =>'https://urbanorestaurante.com/101-home_default/jugo-de-lulo.jpg',
+        'description' =>'En Colombia se preparan todo tipo de zumo de frutas, gracias a la variedad de frutas tropicales presentes en la región. El jugo de lulo se puede preparar con agua o con leche',
+        'timeCook' => '15 minutos',
+        'portions' => '4',
+        'ingredients' =>'-12 lulos
+        -4 vasos agua o leche a gusto
+        -Azúcar',
+        'instructions' =>'1. Pelar los lulos y colarlos en un cedazo con un poco de azúcar',
+
+    ]);
+
+    Recipe::factory()->create([
+        'title' => 'Bizcocho de helado',
+        'imgRecipe' =>'https://www.petitchef.es/imgupl/recipe/bizcocho-de-helado-receta-facil-anti-desperdicio--454556p705119.jpg',
+        'description' =>'Con esta receta podrás preparar un delicioso bizcocho de helado con solo tres ingredientes. Puedes variar el sabor según el helado que escojas',
+        'timeCook' => '35-40 minutos',
+        'portions' => '5',
+        'ingredients' =>'-600 g de helado (elige el sabor que más te guste)
+        -210 g de harina
+        -15 g de levadura química',
+        'instructions' =>'1. Sacar el helado del congelador con tiempo suficiente para hacer la receta. Debe quedar cremoso pero no líquido (aproximadamente una hora).
+        2. Precalentar el horno a 180ºC y engrasar el molde con mantequilla.
+        3. Poner el helado en un bol y añadir la harina y la levadura. Remover bien con unas varillas y verter la mezcla en el molde preparado.
+        4. Hornear durante unos 35 o 40 minutos.
+        Puedes añadir nueces picadas y cualquier otro ingrediente que desees a la mezcla antes de hornear para personalizar tu bizcocho.',
+
+    ]);
+
+    Recipe::factory()->create([
+        'title' => 'Sushi',
+        'imgRecipe' =>'https://www.petitchef.es/imgupl/recipe/sushi-facil-y-economico--441531p682918.jpg',
+        'description' =>'Esta receta es para 2 personas y el tiempo total de preparación es de 35 minutos (15 minutos de elaboración y 20 minutos de cocción)',
+        'timeCook' => '25 minutos',
+        'portions' => '2',
+        'ingredients' =>'-100 g de arroz para sushi
+        -Alga nori
+        -50 g de salmón fresco
+        -1 aguacate
+        -1 pepino
+        -Vinagre
+        -Azúcar
+        -Sal',
+        'instructions' =>'1.Prepara el arroz: cocina el arroz (tipo glutinoso o especial para sushi) y después enfríalo con un abanico tras aliñarlo con vinagre, azúcar y sal.
+        2.Prepara una juliana de aguacate y haz lo mismo con el pepino para tenerlo listo cuando vayas a formar los makis.
+        3.Corta el salmón eligiendo la zona de la ventresca para darle unos cortes en tiras.
+        4.Corta la hoja de alga nori en dos y ponla sobre una esterilla o makisu forrada de film transparente de cocina dejando el lado rugoso arriba.
+        5.Extiende el arroz sobre el alga nori presionando un poco para que se adhiera.
+        6.En el centro del arroz, coloca las tiras de pescado, el pepino y el aguacate y opcionalmente, un poco de wasabi si te gusta el toque picante.
+        7.Enrolla el alga ayudados con la esterilla y forma un cilindro.
+        8.A la hora de servirlo hay que cortarlo en 8 porciones, ayudados de un cuchillo humedecido para que no se nos quede pegado el arroz .',
+
+    ]);
+
+    Recipe::factory()->create([
+        'title' => 'Tacos de Carne',
+        'imgRecipe' =>'',
+        'description' =>'Esta receta es para 2 personas y el tiempo total de preparación es de 60 minutos.',
+        'timeCook' => '60 minutos',
+        'portions' => '2',
+        'ingredients' =>'-1 libra de carne molida de res
+        -Sal y pimienta al gusto
+        -4 dientes de ajo cortados finamente
+        -1/2 taza de cebolla cortada finamente
+        -5 cucharaditas de aceite de maíz
+        -1 cucharadita de paprika
+        -1 sobre de Crema de Tomate MAGGI®
+        -2 tazas de agua
+        -2 tazas de tomate cortado en cubos pequeños
+        -3/4 taza de cebolla morada cortada finamente
+        -1/4 taza de jugo de limón
+        -2 cucharadas de aceite de oliva
+        -1/2 taza de cilantro cortado finamente
+        -Sal y pimienta al gusto
+        -16 tortillas de trigo
+        -1 1/2 taza de queso americano',
+        'instructions' =>'1.Combina la carne molida con sal y pimienta y deja marinar por 5 minutos.
+        2.En una cacerola a fuego alto, vierte el aceite y sofríe el ajo y la cebolla hasta que estén dorados.
+        3.Pon a fuego medio, agrega la carne, la paprika y cocina por 10 minutos revolviendo constantemente.
+        4.En otro tazón, diluye la Crema de Tomate MAGGI® en el agua. Vierte esta mezcla en la cacerola junto a la carne, revuelve y cocina por 15 minutos. Retira del fuego y reserva.
+        5.En otro tazón, mezcla el tomate, la cebolla, el limón, el aceite, el cilantro, la sal y la pimienta y deja marinar por 15 minutos en el refrigerador.
+        6.Calienta las tortillas en el horno por 1 o 2 minutos.
+        7.En cada tortilla coloca 3 cucharadas de carne, 2 cucharadas de pico de gallo y una cucharada de queso americano',
+
+    ]);
+
     }
 }
 
