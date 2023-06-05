@@ -135,7 +135,7 @@ class DatabaseSeeder extends Seeder
 
     Recipe::factory()->create([
         'title' => 'Tacos de Carne',
-        'imgRecipe' =>'',
+        'imgRecipe' =>'https://assets.unileversolutions.com/recipes-v2/231514.png',
         'description' =>'Esta receta es para 2 personas y el tiempo total de preparación es de 60 minutos.',
         'timeCook' => '60 minutos',
         'portions' => '2',
