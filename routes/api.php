@@ -46,5 +46,5 @@ Route::delete('/recipes/{id}', [RecipeController::class, 'destroy'])->name('dele
 Route::get('/recipes/search/{title}', [RecipeController::class, 'search']);
 Route::get('/myRecipes', [RecipeController::class, 'myRecipes'])->middleware('auth');
 
-Route::put('/user', [UserController::class, 'update']);
-Route::get('/user', [UserController::class, 'show']);
+Route::put('/user', [UserController::class, 'update'])->middleware('auth');
+Route::get('/user', [UserController::class, 'show'])->middleware('auth');
